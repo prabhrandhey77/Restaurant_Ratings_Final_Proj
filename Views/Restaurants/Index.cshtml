@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Restaurant_Ratings_Final_Proj.Models.Restaurant>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using Microsoft.AspNetCore.Identity
+
+<h1>Registered Restaurants </h1>
+
+
+@if (User.IsInRole("rating_admin"))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">+ Register New </a>
+    </p>
+
+}
+    @foreach (var item in Model)
+    {
+
+
+        <div class="card border-success" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.RegistredName)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Since : @Html.DisplayFor(modelItem => item.Since)</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Customer Rating : @Html.DisplayFor(modelItem => item.OverallRating) / 5</h6>
+                <p class="card-text">Address: @Html.DisplayFor(modelItem => item.Address)</p>
+
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+
+
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (User.IsInRole("customer"))
+                {
+                    <a class="btn btn-primary" href="/Ratings/Create/@Html.DisplayFor(modelItem => item.Id)">Rate This</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </div>
+        </div>
+
+
+
+    }
+
